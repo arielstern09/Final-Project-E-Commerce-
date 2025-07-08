@@ -33,8 +33,21 @@ const addCustomer = async (customerData) => {
     }
 };
 
+const updateCustomerById = async (customerId, customerData) =>{
+    try {
+        const updatedCustomer = await Customer.findByIdAndUpdate(
+            customerId, 
+            customerData, 
+            {new: true}); // allows it to return updated data
+        return updatedCustomer
+    } catch (error) {
+      throw error;
+    }
+}
+
 module.exports = {
     getCustomer,
     getCustomerById,
-    addCustomer
+    addCustomer,
+    updateCustomerById
 }

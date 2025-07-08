@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {addCustomer, getCustomer, getCustomerById} = require("./customerController");
+const {addCustomer, getCustomer, getCustomerById, updateCustomerById} = require("./customerController");
 
 router.get("/", async (req, res) =>{
 try {
@@ -34,7 +34,7 @@ router.post("/", async (req, res) =>{
     try {
         const newCustomer = await addCustomer(req.body)
         res.json({
-            message: " has been successfully created",
+            message: " customer has been successfully added",
             payload: newCustomer
         })
     } catch (error) {
@@ -45,5 +45,21 @@ router.post("/", async (req, res) =>{
         
     }
 });
+
+router.put("/:customerId", async (req, res)=> {
+    try {
+        const updatedCustomer = await updateCustomerById(req.params.customerId, req.body)
+        res.json({
+            message: "success",
+            payload: updatedCustomer,
+        });
+    } catch (error) {
+        res.json({
+            message: "failure",
+            payload: error.message,
+        });
+    }
+})
+
 
 module.exports = router
