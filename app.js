@@ -12,8 +12,8 @@ app.use(logger("dev"));
 const customerRouter = require("./routes/customer/customerRouter")
 app.use("/api/customer", customerRouter);
 
-
-
+const productRouter = require("./routes/product/productRouter")
+app.use("/api/product", productRouter);
 
 app.listen(PORT, () => {
     console.log(`server is on port ${PORT}...`);
