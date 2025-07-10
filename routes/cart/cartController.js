@@ -72,11 +72,22 @@ const getCartWithTotalPrice = async (cartId) => {
       throw error; 
     }
   };
+
+  const clearCart = async (cartId) => {
+    try {
+        const clearItems = await Cart.findByIdAndDelete(cartId)
+        return clearItems
+    } catch (error) {
+        throw error
+    }    
+  }
+
   
   module.exports = {
     createCart,
     getCartWithTotalPrice,
     updateCartItemQuantity,
     updateCartItem,
+    clearCart
 
   };

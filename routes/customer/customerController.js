@@ -11,7 +11,6 @@ const getCustomer = async () =>{
     
 }
 
-// get User by ID
 const getCustomerById = async (Id) => {
     try {
         const customer = await Customer.findById(Id)
@@ -24,7 +23,6 @@ const getCustomerById = async (Id) => {
 const addCustomer = async (customerData) => {
 
     try {
-        // Add new user to database!
         const newCustomer = await Customer.create(customerData)
         return newCustomer
 
@@ -38,7 +36,7 @@ const updateCustomerById = async (customerId, customerData) =>{
         const updatedCustomer = await Customer.findByIdAndUpdate(
             customerId, 
             customerData, 
-            {new: true}); // allows it to return updated data
+            {new: true}); 
         return updatedCustomer
     } catch (error) {
       throw error;

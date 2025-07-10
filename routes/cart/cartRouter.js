@@ -5,6 +5,7 @@ const {
   getCartWithTotalPrice,
   updateCartItemQuantity,
   updateCartItem,
+  clearCart
 } = require("./cartController");
 
 router.get("/:cartId", async (req, res) => {
@@ -62,5 +63,14 @@ router.put("/:cartId/items/quantity", async (req, res) => {
     res.json({ message: "failure", payload: error.message });
   }
 });
+
+router.delete("/:cardId", async (req, res) =>{
+    try {
+        const deleteCart = await clearCart(req.params.cardId)
+        res.json({ message: " success ", payload: deleteCart });
+    } catch (error) {
+        res.json({ message: "failure", payload: error.message });
+    }
+})
 
 module.exports = router;
