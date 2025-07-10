@@ -29,7 +29,7 @@ router.get("/:customerId", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const { cartId } = req.body; // get cartId from JSON body
+    const { cartId } = req.body; 
 
     const newOrder = await createOrderFromCart(cartId);
     res
