@@ -55,7 +55,7 @@ const updateProductById = async (productId, productData) => {
     const updatedProduct = await Product.findByIdAndUpdate(
       productId,
       productData,
-      { new: true }
+      { new: true, runValidators: true }
     );
     return updatedProduct;
   } catch (error) {

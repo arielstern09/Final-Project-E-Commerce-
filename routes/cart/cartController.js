@@ -1,6 +1,5 @@
 const Cart = require("./cartModel");
 const Product = require("../product/productModel");
-const {getProductById} = require("../product/productController");
 
 const getCartWithTotalPrice = async (cartId) => {
     try {
@@ -8,7 +7,6 @@ const getCartWithTotalPrice = async (cartId) => {
         .populate('customer', 'name email')
         .populate('items.productId', 'name price');
         
-  
       let totalPrice = 0;
   
       for (const item of cart.items) {
@@ -28,34 +26,13 @@ const getCartWithTotalPrice = async (cartId) => {
     
   const createCart = async (cartData) => {
     try {
-      let totalPrice = 0;
+      const newCart = await Cart.create(cartData);
   
-      for (let i = 0; i < cartData.items.length; i++) {
-        const item = cartData.items[i];
-        const product = await getProductById(item.productId);
+      const populatedCart = await Cart.findById(newCart._id)
+        .populate('customer', 'name email')
+        .populate('items.productId', 'name price');
   
-        const newAvailableStock = product.stock - item.quantity;
-        await Product.findByIdAndUpdate(item.productId, { stock: newAvailableStock });
-  
-        totalPrice += item.quantity * product.price;
-      }
-  
-      const cartToSave = {
-        customer: cartData.customer,  
-        items: cartData.items,
-      };
-  
-      const newCart = await Cart.create(cartToSave);
-      const cartObject = newCart.toObject();
-  
-      const cartWithTotal = {
-        customer: cartObject.customer,
-        items: cartObject.items,
-        totalPrice: totalPrice,
-        status: cartData.status || 'active'  
-      };
-  
-      return cartWithTotal;
+      return populatedCart; 
     } catch (error) {
       throw error;
     }
@@ -63,13 +40,14 @@ const getCartWithTotalPrice = async (cartId) => {
 
   const updateCartItemQuantity = async (cartId, productId, newQuantity) => {
     try {
+        
       const product = await Product.findById(productId);
       const cart = await Cart.findById(cartId);
   
       return await Cart.findOneAndUpdate(
         { _id: cartId, "items.productId": productId },
         { $set: { "items.$.quantity": newQuantity } },
-        { new: true }
+        { new: true, runValidators: true }
       );
     } catch (error) {
       throw error; 
@@ -102,7 +80,3 @@ const getCartWithTotalPrice = async (cartId) => {
     updateCartItem,
 
   };
-  
-
-
-
