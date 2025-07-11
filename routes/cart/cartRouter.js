@@ -66,7 +66,7 @@ router.put("/:cartId/items/quantity", async (req, res) => {
 
 router.delete("/:cartId", async (req, res) =>{
     try {
-        const deleteCart = await clearCart(req.params.cardId)
+        const deleteCart = await clearCart(req.params.cartId)
         res.json({ message: " success ", payload: deleteCart });
     } catch (error) {
         res.json({ message: "failure", payload: error.message });
