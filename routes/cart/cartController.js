@@ -40,17 +40,15 @@ const getCartWithTotalPrice = async (cartId) => {
 
   const updateCartItemQuantity = async (cartId, productId, newQuantity) => {
     try {
-        
-      const product = await Product.findById(productId);
-      const cart = await Cart.findById(cartId);
-  
-      return await Cart.findOneAndUpdate(
+      const updatedCart = await Cart.findOneAndUpdate(
         { _id: cartId, "items.productId": productId },
         { $set: { "items.$.quantity": newQuantity } },
         { new: true, runValidators: true }
       );
+  
+      return updatedCart;
     } catch (error) {
-      throw error; 
+      throw error;
     }
   };
 
