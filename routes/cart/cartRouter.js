@@ -5,7 +5,7 @@ const {
   getCartWithTotalPrice,
   updateCartItemQuantity,
   updateCartItem,
-  clearCart
+  clearCart,
 } = require("./cartController");
 
 router.get("/:cartId", async (req, res) => {
@@ -52,25 +52,25 @@ router.put("/:cartId/items", async (req, res) => {
 router.put("/:cartId/items/quantity", async (req, res) => {
   try {
     const { cartId } = req.params;
-    const { productId, newQuantity } = req.body;
+    const { productId, quantity } = req.body;
     const updatedCart = await updateCartItemQuantity(
       cartId,
       productId,
-      newQuantity
+      quantity
     );
     res.json({ message: "Quantity updated", payload: updatedCart });
+  } catch (error) {
+    res.status(500).json({ message: "failure", payload: error.message });
+  }
+});
+
+router.delete("/:cartId", async (req, res) => {
+  try {
+    const deleteCart = await clearCart(req.params.cartId);
+    res.json({ message: " success ", payload: deleteCart });
   } catch (error) {
     res.json({ message: "failure", payload: error.message });
   }
 });
-
-router.delete("/:cartId", async (req, res) =>{
-    try {
-        const deleteCart = await clearCart(req.params.cartId)
-        res.json({ message: " success ", payload: deleteCart });
-    } catch (error) {
-        res.json({ message: "failure", payload: error.message });
-    }
-})
 
 module.exports = router;
